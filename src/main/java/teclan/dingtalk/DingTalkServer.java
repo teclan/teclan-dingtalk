@@ -20,6 +20,7 @@ public class DingTalkServer {
 
 	private static String url;
 	private static List<String> phones;
+	private static boolean enable;
 
 	static {
 		File file = new File("config/application.conf");
@@ -28,6 +29,7 @@ public class DingTalkServer {
 		Config config = root.getConfig("config");
 		url = config.getString("dingtalk.url");
 		phones = config.getStringList("dingtalk.phones");
+		enable = config.getBoolean("dingtalk.enable");
 	}
 
 	public static String send(String title, String content) throws IOException {
@@ -35,6 +37,10 @@ public class DingTalkServer {
 	}
 
 	public static String send(String url, String title, String content, List<String> phones) throws IOException {
+
+		if (!enable) {
+			return null;
+		}
 
 		OkHttpClient client = new OkHttpClient();
 
