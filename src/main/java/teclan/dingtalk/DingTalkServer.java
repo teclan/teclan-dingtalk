@@ -1,10 +1,13 @@
 package teclan.dingtalk;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -14,6 +17,22 @@ import okhttp3.Response;
 
 public class DingTalkServer {
 	public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+	private static String url;
+	private static List<String> phones;
+
+	static {
+		File file = new File("config/application.conf");
+
+		Config root = ConfigFactory.parseFile(file);
+		Config config = root.getConfig("config");
+		url = config.getString("dingtalk.url");
+		phones = config.getStringList("dingtalk.phones");
+	}
+
+	public static String send(String title, String content) throws IOException {
+		return send(url, title, content, phones);
+	}
 
 	public static String send(String url, String title, String content, List<String> phones) throws IOException {
 
