@@ -2,6 +2,8 @@ package teclan.dingtalk;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import com.alibaba.fastjson.JSONArray;
@@ -17,6 +19,7 @@ import okhttp3.Response;
 
 public class DingTalkServer {
 	public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+	private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	private static String url;
 	private static List<String> phones;
@@ -64,6 +67,9 @@ public class DingTalkServer {
 			atMobiles.add(phone);
 			sb.append(" @").append(phone);
 		}
+
+		sb.append(" 时间:").append(DATE_FORMAT.format(new Date()));
+
 		at.put("atMobiles", atMobiles);
 		at.put("isAtAll", false);
 
